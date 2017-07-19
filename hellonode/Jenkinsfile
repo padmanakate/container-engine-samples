@@ -1,0 +1,19 @@
+node {
+
+def project ='mgtrat-172012'
+def appName ='hello-node'
+def imageTag = "gcr.io/${project}/${appName}:v1"
+
+checkout scm
+
+stage 'Build image'
+
+sh ("docker build -t $ {imageTag} .
+
+stage 'push image to registry'
+sh ("gcloud docker -- push ${imageTag}")
+
+stage "Deploy Application"
+sh ("kubectl run hello-world --image=gcr.io/${PROJECT_ID}/hello-node:v1 --port 8080")
+
+}
